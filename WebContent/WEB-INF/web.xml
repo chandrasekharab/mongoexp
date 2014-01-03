@@ -1,0 +1,71 @@
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee">
+	<description>
+		Servlet to add the data into database
+	</description>
+	<display-name>Servlet to add the data into database</display-name>
+	<context-param>
+		<param-name>ss</param-name>
+		<param-value>ss</param-value>
+	</context-param>
+	
+	<servlet>
+		<servlet-name>basicauth</servlet-name>
+		<servlet-class>chan.test.BasicAuth</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>basicauth</servlet-name>
+		<url-pattern>/basicauth</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>LogoutServlet</servlet-name>
+		<servlet-class>chan.test.LogoutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LogoutServlet</servlet-name>
+		<url-pattern>/LogoutServlet</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>testinsertdata</servlet-name>
+		<servlet-class>chan.test.TestInsertData</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>testinsertdata</servlet-name>
+		<url-pattern>/testinsertdata</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>FileUploadHandler</servlet-name>
+		<servlet-class>chan.retailer.servlet.FileUploadHandler</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FileUploadHandler</servlet-name>
+		<url-pattern>/FileUpload</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ImageServlet</servlet-name>
+		<servlet-class>chan.retailer.servlet.ImageServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImageServlet</servlet-name>
+		<url-pattern>/images</url-pattern>
+	</servlet-mapping>
+	
+		
+	<servlet>
+		<servlet-name>newuser</servlet-name>
+		<servlet-class>chan.test.UserRegistration</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>newuser</servlet-name>
+		<url-pattern>/newuser</url-pattern>
+	</servlet-mapping>
+	
+	<listener>
+    	<listener-class>chan.retailer.servlet.InitServlet</listener-class>
+	</listener>
+ 
+</web-app>

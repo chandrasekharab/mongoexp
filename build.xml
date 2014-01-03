@@ -1,0 +1,42 @@
+<?xml version="1.0" ?> 
+<project name="mongodbexp" default="war">
+
+	<property name="tomcatpath" value="D:\apache-tomcat-7.0.27"></property>
+	<property name="warname" value="mongodbexp.war"></property>
+	<property name="warfoldername" value="mongodbexp"></property>
+	
+	<path id="compile.classpath">
+		<fileset dir="WebContent/WEB-INF/lib">
+			<include name="*.jar"/>
+		</fileset>		
+	</path>
+	
+	<target name="init">
+		<mkdir dir="build/classes"/>
+		<mkdir dir="dist" />
+	</target>
+	
+	<target name="compile" depends="init" >
+		<javac fork="true" includeantruntime="false" destdir="build/classes" debug="true" srcdir="src">
+			<classpath refid="compile.classpath"/>
+		</javac>
+	</target>
+	
+	<target name="war" depends="compile">
+		<war destfile="${tomcatpath}/webapps/${warname}" webxml="WebContent/WEB-INF/web.xml">
+			<fileset dir="WebContent"/>
+			<lib dir="WebContent/WEB-INF/lib"/>
+			<classes dir="build/classes"/>
+		</war>
+	</target>
+	
+	<target name="clean">
+		<delete dir="dist" />
+		<delete dir="build" />
+		<delete file="${tomcatpath}/webapps/${warname}"></delete>
+		<delete dir="${tomcatpath}\work\Catalina\localhost" />
+		<delete dir="${tomcatpath}/webapps/${warfoldername}" />
+		
+	</target>
+	
+</project>
