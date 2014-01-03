@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>New Page 1</title>
-</head>
+
 <body bgcolor="#999966">
 	<form method="POST" action="basicauth">
 		<!--webbot bot="SaveResults" U-File="fpweb:///_private/form_results.txt"
@@ -22,5 +22,29 @@ S-Format="TEXT/CSV" S-Label-Fields="TRUE" -->
 	
 	<a id="newuser" href="NewUser.html">New User</a>	
 	
+	<div>
+		<button id="testajax" onclick='testAjax()'>Test Ajax</button>
+	</div>
+	
+<script type="text/javascript">
+function testAjax() {
+	
+	
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			debugger;
+			//xmlhttp.responseText;
+		}
+	}
+
+	xmlhttp.open("POST", "TestInsertData");
+	xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xmlhttp.send("fname=Henry&lname=Ford");
+
+	}
+</script>
+
 </body>
+
 </html>

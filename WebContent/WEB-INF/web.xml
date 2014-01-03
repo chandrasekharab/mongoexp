@@ -28,12 +28,12 @@
 	
 	
 	<servlet>
-		<servlet-name>testinsertdata</servlet-name>
-		<servlet-class>chan.test.TestInsertData</servlet-class>
+		<servlet-name>TestInsertData</servlet-name>
+		<servlet-class>chan.retailer.servlet.TestInsertData</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>testinsertdata</servlet-name>
-		<url-pattern>/testinsertdata</url-pattern>
+		<servlet-name>TestInsertData</servlet-name>
+		<url-pattern>/TestInsertData</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>

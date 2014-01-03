@@ -27,7 +27,8 @@ public class PropertiesUtil {
 	 */
 	public static String getHost() throws FileNotFoundException, IOException {
 		if (host == null) {
-			host = getProperties().getProperty(HOST); 
+			host = "localhost";
+					//getProperties().getProperty(HOST); 
 		}
 		return host;
 	}
@@ -40,14 +41,16 @@ public class PropertiesUtil {
 	 */
 	public static String getDBName() throws FileNotFoundException, IOException {
 		if (dbName == null) {
-			dbName = getProperties().getProperty(DBNAME);
+			dbName = "testdb";
+					//getProperties().getProperty(DBNAME);
 		}
 		return dbName;
 	}
 	
 	public static String getGroceryStoreName() throws FileNotFoundException, IOException {
 		if (groceryStoreName == null) {
-			groceryStoreName = getProperties().getProperty(GROCERY_STORE);
+			groceryStoreName = "makssa_groceries"; 
+					//getProperties().getProperty(GROCERY_STORE);
 		}
 		return groceryStoreName;
 	}
@@ -65,12 +68,12 @@ public class PropertiesUtil {
 		Map<Object, Object> data = new HashMap<>();
 		data.put(HOST, getHost());
 		data.put(DBNAME, getDBName());
-		data.put(GROCERY_STORE, groceryStoreName);
+		data.put(GROCERY_STORE, getGroceryStoreName());
 		
 		return data;
 	}
 	
 	public static String getUploadDirectoryPath() throws FileNotFoundException, IOException {
-		return getProperties().getProperty(UPLOAD_DIRECTORY);
+		return "D:/tempImages";//getProperties().getProperty(UPLOAD_DIRECTORY);
 	}
 }
