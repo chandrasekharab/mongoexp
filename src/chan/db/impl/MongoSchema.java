@@ -1,6 +1,8 @@
 package chan.db.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.mongodb.BasicDBObject;
@@ -60,6 +62,22 @@ public class MongoSchema implements Schema{
 			}			
 		}
 		return new MongoDocumentObject(data);
+	}
+
+	@Override
+	public List<DocumentObject> getDocumentObjects(int startIndex,
+			int endIndex, int maxRecords) {
+		
+		//For example, to get an array of the 1000-1100th elements of a cursor, use
+		//List obj = collection.find( query ).skip( 1000 ).limit( 100 ).toArray();
+		
+		DBCursor cursor = mongoDBCol.find();
+		List<DocumentObject> docList = new ArrayList<>(); 
+		while (cursor.hasNext()) {
+			DBObject obj = cursor.next();			
+			docList.add(new MongoDocumentObject(obj.toMap()));
+		}
+		return docList;
 	}
 
 }

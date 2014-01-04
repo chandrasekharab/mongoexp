@@ -17,7 +17,7 @@ public class TestInsertData extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		Handler handler = RetailerHelper.getServletHandler();
+		Handler handler = RetailerHelper.getServletHandler(request);
 		if (handler.canHandle(request)) {
 			handler.handle(request, response);
 		} else {

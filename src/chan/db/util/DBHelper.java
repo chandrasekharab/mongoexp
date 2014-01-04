@@ -1,5 +1,6 @@
 package chan.db.util;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +48,14 @@ public class DBHelper {
 	/**
 	 * 
 	 * @return
+	 * @throws Exception 
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public static Connection getConnection () {
+	public static Connection getConnection () throws FileNotFoundException, IOException, Exception {
+		if (connectionPool == null) {
+			initConnections(PropertiesUtil.getPropertiesMap(), 1);
+		}
 		return connectionPool.get(0);
 	}
 	
@@ -71,7 +78,7 @@ public class DBHelper {
 		if (db == null) {
 			try {
 				db = getConnection().getDB(PropertiesUtil.getHost());
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

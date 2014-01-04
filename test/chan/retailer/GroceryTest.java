@@ -1,7 +1,9 @@
 package chan.retailer;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
@@ -12,7 +14,6 @@ import org.junit.Test;
 import chan.db.util.DBHelper;
 import chan.db.util.PropertiesUtil;
 import chan.retailer.db.InvalidGroceryException;
-import chan.retailer.db.RetailerConstants;
 import chan.retailer.util.RetailerHelper;
 
 public class GroceryTest {
@@ -28,7 +29,7 @@ public class GroceryTest {
 		}
 	}
 	
-	@Test
+	//@Test
 	public void testInsertGrocery() {
 		Map<Object, Object> item = new HashMap<>();
 		item.put(RetailerConstants.GROCERY_NAME, "Close Up");
@@ -39,6 +40,17 @@ public class GroceryTest {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}		
+	}
+	
+	@Test
+	public void testGetAllGroceries() {
+		try {
+			List<Map<Object, Object>> data = RetailerHelper.getAllGroceries();
+			data.get(0);
+		} catch (IOException e) {			
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
 	}
 	
 	@After

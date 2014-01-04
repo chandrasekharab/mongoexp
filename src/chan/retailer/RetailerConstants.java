@@ -1,4 +1,4 @@
-package chan.retailer.db;
+package chan.retailer;
 
 public class RetailerConstants {
 
@@ -7,5 +7,9 @@ public class RetailerConstants {
 	public static final String MRP = "mrp";
 	public static final String PRICE = "price";	
 	public static final String IMAGE_URL = "imageurl";
+	
+	public static final String GROCERY_CONTEXT = "grocery";
+	
+	public static final String GET_ALL_GROCERIES = "getAllGroceries";
 	
 }

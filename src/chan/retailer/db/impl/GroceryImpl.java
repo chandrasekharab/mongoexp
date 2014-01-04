@@ -5,9 +5,9 @@ import java.util.Map;
 
 import chan.db.DocumentObject;
 import chan.db.util.DBHelper;
+import chan.retailer.RetailerConstants;
 import chan.retailer.db.Grocery;
 import chan.retailer.db.InvalidGroceryException;
-import chan.retailer.db.RetailerConstants;
 
 public class GroceryImpl implements Grocery{
 
@@ -49,8 +49,7 @@ public class GroceryImpl implements Grocery{
 
 	@Override
 	public Map<Object, Object> getCompleteDetails() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.item;
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class GroceryImpl implements Grocery{
 
 	@Override
 	public DocumentObject getDocumentObject() {		
-		return DBHelper.getDocumentObjectInstance(item);
+		return DBHelper.getDocumentObjectInstance(this.item);
 	}
 
 }

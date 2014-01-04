@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import chan.retailer.util.RetailerHelper;
 import chan.security.AuthUtil;
 
 public class BasicAuth extends HttpServlet {
@@ -60,5 +61,9 @@ public class BasicAuth extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+	}
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response) {		
+		RetailerHelper.getServletHandler(request);
 	}
 }

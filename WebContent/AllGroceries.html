@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>File Uploading Form</title>
+<style>
+.grocery {
+	width: 120px;
+	height: 120px;
+	float: left;
+}
+
+.grocery .image {
+	width: 80px;
+	height: 80px;
+}
+</style>
+</head>
+<body>
+<button onclick="getAllGroceries()">Get Groceries</button>
+<div id="preview">
+</div>
+<script id="groceryTemplate" type="template">
+<div id="{{name}}" class="grocery">
+<a href="{{imageurl}}">
+<img id="{{name}}image" src="{{imageurl}}" class="image" data-zoom-image="{{imageurl}}"/>
+</a>
+<div>
+{{name}}
+</div>
+<div>
+{{price}}
+</div>
+<div>
+Qty: <input type="text" size='2'></input>
+<button onclick="alert('soon will add to cart')">Add To Cart</button>
+</div>
+</div>
+</script>
+
+<script src="lib/jquery-1.10.2.js" type="text/javascript" ></script>
+<script src="lib/jquery.elevatezoom.js" type="text/javascript" ></script>
+
+<script type="text/javascript">
+    function applyTemplate(template, data) {    	
+    	for (var d in data) {
+    		var re = new RegExp("{{" + d + "}}", "g");
+    		template = template.replace(re, data[d]); 		
+    	}
+    	return template;
+    }
+    
+	function getAllGroceries() {
+		var templatestr = $("#groceryTemplate").html();
+		
+		$.ajax({
+				url: "core/grocery/getAllGroceries"
+			}).done(function (response) {
+				var jObj = JSON.parse(response);				
+				for (var i=0; i < jObj.length; i++) {
+					$("#preview").append(applyTemplate(templatestr, jObj[i]));
+					$('#' + jObj[i]["name"] + "image").elevateZoom(); 
+				}				
+				});
+		
+	}
+</script>
+
+
+</body>
+</html>

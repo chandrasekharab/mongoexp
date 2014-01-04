@@ -7,8 +7,16 @@
 		<param-name>ss</param-name>
 		<param-value>ss</param-value>
 	</context-param>
-	
 	<servlet>
+		<servlet-name>RetailerServlet</servlet-name>
+		<servlet-class>chan.retailer.servlet.RetailerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RetailerServlet</servlet-name>
+		<url-pattern>/core/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- <servlet>
 		<servlet-name>basicauth</servlet-name>
 		<servlet-class>chan.test.BasicAuth</servlet-class>
 	</servlet>
@@ -62,7 +70,7 @@
 	<servlet-mapping>
 		<servlet-name>newuser</servlet-name>
 		<url-pattern>/newuser</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 	
 	<listener>
     	<listener-class>chan.retailer.servlet.InitServlet</listener-class>

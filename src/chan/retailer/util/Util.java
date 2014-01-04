@@ -18,7 +18,10 @@ package chan.retailer.util;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import chan.db.util.DBHelper;
+import chan.retailer.RetailerConstants;
 
 public class Util {
 	
@@ -33,4 +36,35 @@ public class Util {
 		return (String)data.get(attribute);
 	}
 	
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static String getContextValue(HttpServletRequest request) {
+		String pathInfo = request.getPathInfo();
+		if (pathInfo == null || pathInfo.isEmpty()) {
+			return "";
+		}
+		
+		String[] tokens = pathInfo.split("/");
+		if (tokens.length > 1){
+			return tokens[1];
+		}		
+		return pathInfo;
+	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static String getServiceName(HttpServletRequest request) {
+		String pathInfo = request.getPathInfo();
+		String context = getContextValue(request);
+		if (pathInfo.equals(context)) {
+			return "";
+		}
+		return pathInfo.substring(context.length() + 2);
+	}
 }

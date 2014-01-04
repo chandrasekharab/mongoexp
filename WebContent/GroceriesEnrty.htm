@@ -1,15 +1,95 @@
 <html>
 <head>
 <title>File Uploading Form</title>
+<style>
+.grocery {
+	width: 120px;
+	height: 120px;
+}
+
+.grocery .image {
+	width: 80px;
+	height: 80px;
+}
+</style>
 </head>
 <body>
 <h3>File Upload:</h3>
 Select a file to upload: <br />
-<form action="FileUpload" method="post"
-                        enctype="multipart/form-data">
-<input type="file" name="file" size="50" />
+<form id="groceryform" action="FileUpload" method="post" enctype="multipart/form-data">
+ Enter Name : <input type="text" name="name" />
+ Expiry Date: <input type="text" name="expirydate" />
+ Price: <input type="text" name="price" />
+ Browser File: <input type="file" name="file" size="50" />
 <br />
-<input type="submit" value="Upload File" />
 </form>
+<button onclick="grocerySubmit()">Save</button>
+
+<div id="preview">
+</div>
+<script id="groceryTemplate" type="template">
+<div id="grocery" class="grocery">
+<a href="{{imageurl}}">
+<img id="grocery-image" src="{{imageurl}}" class="image" data-zoom-image="{{imageurl}}"/>
+</a>
+<div>
+{{price}}
+</div>
+<div>
+Qty: <input type="text" size='2'></input>
+<button onclick="alert('soon will add to cart')">Add To Cart</button>
+</div>
+</div>
+</script>
+
+<script src="lib/jquery-1.10.2.js" type="text/javascript" ></script>
+<script src="lib/jquery.elevatezoom.js" type="text/javascript" ></script>
+
+<script type="text/javascript">
+    function applyTemplate(template, data) {    	
+    	for (var d in data) {
+    		var re = new RegExp("{{" + d + "}}", "g");
+    		template = template.replace(re, data[d]); 		
+    	}
+    	return template;
+    }
+
+	function grocerySubmit() {
+		$("#groceryform").submit(function(e) {
+				 
+		    var formObj = $(this);
+		    var formURL = formObj.attr("action");
+		 
+		    if(window.FormData !== undefined) {
+		 
+		        var formData = new FormData(this);
+		        $.ajax({
+		            url: formURL,
+		            type: 'POST',
+		            data:  formData,
+		            mimeType:"multipart/form-data",
+		            contentType: false,
+		            cache: false,
+		            processData:false,
+		            success: function(data, textStatus, jqXHR) {		 				
+		            	var template = $("#groceryTemplate").html();
+		            	var jObj = JSON.parse(data);
+		            	$("#preview").append(applyTemplate(template, jObj));
+		            	
+		            	 $('#grocery-image').elevateZoom(); 
+		            	
+		            },
+		            error: function(jqXHR, textStatus, errorThrown){
+		 
+		            }           
+		       });
+		        e.preventDefault();
+		   }
+		});
+		$("#groceryform").submit();
+	}
+</script>
+
+
 </body>
 </html>
