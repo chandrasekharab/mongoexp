@@ -13,5 +13,9 @@ public class RetailerServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {	
 		Handler handler = RetailerHelper.getServletHandler(request);
 		handler.handle(request, response);				
-	}	
+	}
+	
+	public void doPost(HttpServletRequest request, HttpServletResponse response) {	
+		doGet(request, response);				
+	}
 }

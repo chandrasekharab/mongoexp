@@ -16,6 +16,8 @@
 
 package chan.retailer.util;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,5 +68,22 @@ public class Util {
 			return "";
 		}
 		return pathInfo.substring(context.length() + 2);
+	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public static Map<Object, Object> getRequestParamsMap(HttpServletRequest request) {
+		Map<Object, Object> item = new HashMap<>();
+		Enumeration<String> parameterNames = request.getParameterNames();
+		String paramName = "";
+		while (parameterNames.hasMoreElements()) {
+			paramName = parameterNames.nextElement();			
+			item.put(paramName, request.getParameter(paramName));
+		}
+		
+		return item;
 	}
 }

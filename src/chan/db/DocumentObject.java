@@ -30,4 +30,11 @@ public interface DocumentObject {
 	 * @return
 	 */
 	public boolean create(Map<Object, Object> values);
+	
+	/**
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public Object getValue(String key);
 }

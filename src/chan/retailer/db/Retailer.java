@@ -42,6 +42,9 @@ public interface Retailer {
 	
 	/**
 	 * 
+	 * @param user
+	 * @param createIfNotExist
+	 * @return
 	 */
-	public Basket getLatestBasket(String user);
+	public Basket getLatestBasket(String user, boolean createIfNotExist);
 }

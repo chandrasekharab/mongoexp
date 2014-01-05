@@ -36,9 +36,9 @@ public class MongoSchema implements Schema{
 	}
 
 	@Override
-	public boolean updateDocumentObject(DocumentObject docObj, Map<Object, Object> values) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateDocumentObject(DocumentObject docObj, Map<Object, Object> values) {		
+		mongoDBCol.update(new BasicDBObject(docObj.getValues()), new BasicDBObject(values));
+		return true;
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class MongoSchema implements Schema{
 		while (cursor.hasNext()) {
 			DBObject dbObj = cursor.next();
 			Object obj = dbObj.get(objName);
-			if (data == null) {
+			if (obj == null) {
 				continue;
 			}
 			
@@ -78,6 +78,24 @@ public class MongoSchema implements Schema{
 			docList.add(new MongoDocumentObject(obj.toMap()));
 		}
 		return docList;
+	}
+
+	@Override
+	public DocumentObject getDocumentObject(String key, Object value) {
+		DBObject dbObj = mongoDBCol.findOne(new BasicDBObject(key, value));		
+		if (dbObj != null) {
+			return new MongoDocumentObject(dbObj.toMap());
+		}
+		return null;
+	}
+
+	@Override
+	public DocumentObject getDocumentObject(Map<Object, Object> values) {
+		DBObject dbObj = mongoDBCol.findOne(new BasicDBObject(values));		
+		if (dbObj != null) {
+			return new MongoDocumentObject(dbObj.toMap());
+		}
+		return null;
 	}
 
 }

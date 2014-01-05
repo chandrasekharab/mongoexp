@@ -7,6 +7,11 @@ import javax.crypto.spec.PBEKeySpec;
 
 
 
+
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
 import java.security.SecureRandom;
 
 public class Password {
@@ -14,7 +19,7 @@ public class Password {
     // expensive computing the hash is for us
     // and also for a brute force attack.
     private static final int iterations = 10*1024;
-    private static final int saltLen = 32;
+    private static final int saltLen = 16;
     private static final int desiredKeyLen = 256;
 
     /** Computes a salted PBKDF2 hash of given plaintext password
@@ -23,7 +28,9 @@ public class Password {
     public static String getSaltedHash(String password) throws Exception {
         byte[] salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
         // store the salt with the password
-        return Base64.encode(new String(salt)) + "$" + hash(password, salt);
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(salt) + "$" + hash(password, salt);
+        //return Base64.encode(new String(salt)) + "$" + hash(password, salt);
         
         
     }
@@ -34,9 +41,10 @@ public class Password {
         String[] saltAndPass = stored.split("\\$");
         if (saltAndPass.length != 2)
             return false;
-        
-        String salt = Base64.decode(new String(saltAndPass[0]));        
-        String hashOfInput = hash(password, salt.getBytes());
+        BASE64Decoder decoder = new BASE64Decoder();
+        byte[] salt = decoder.decodeBuffer(saltAndPass[0]);
+        //String salt = saltAndPass[0];
+        String hashOfInput = hash(password, salt);
         return hashOfInput.equals(saltAndPass[1]);
     }
 
@@ -49,6 +57,8 @@ public class Password {
         SecretKey key = f.generateSecret(new PBEKeySpec(
             password.toCharArray(), salt, iterations, desiredKeyLen)
         );
-        return Base64.encode(new String(key.getEncoded()));
+        BASE64Encoder encoder = new BASE64Encoder();
+        return encoder.encode(key.getEncoded());
+        //return encoder.encode(new String(key.getEncoded()));
     }
 }

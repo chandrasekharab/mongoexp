@@ -13,6 +13,7 @@ import chan.db.Schema;
 import chan.db.util.DBHelper;
 import chan.db.util.PropertiesUtil;
 import chan.retailer.BasicHandler;
+import chan.retailer.BasketHandler;
 import chan.retailer.GroceryHandler;
 import chan.retailer.Handler;
 import chan.retailer.RetailerConstants;
@@ -69,6 +70,10 @@ public class RetailerHelper {
 			case RetailerConstants.GROCERY_CONTEXT:
 				handler = new GroceryHandler();
 				break;
+				
+			case RetailerConstants.BASKET_CONTEXT:
+				handler = new BasketHandler();
+				break;
 	
 			default:
 				handler = new BasicHandler();
@@ -115,6 +120,20 @@ public class RetailerHelper {
 			grocerySchema = DBHelper.getSchema(PropertiesUtil.getGroceryStoreName());
 		}
 		return grocerySchema;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 */
+	public static Grocery getGrocery(String key, Object value) throws FileNotFoundException, IOException {
+		DocumentObject dObj = getGrocerySchema().getDocumentObject(key, value);
+		if (dObj != null) {
+			return new GroceryImpl(dObj.getValues());
+		}
+		return null;		
 	}
 	
 }

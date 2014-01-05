@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import chan.retailer.RetailerConstants;
 import chan.retailer.util.Util;
 import chan.retailer.util.RetailerFactory;
 
@@ -43,11 +44,25 @@ public class AuthUtil {
 	}
 
 	public static boolean authenticate(String user, String pass) throws Exception {		
-		return Password.check(pass, Util.getAttributeValue(user, pass));
+		return Password.check(pass, Util.getAttributeValue(user, RetailerConstants.PASSWORD));
 	}
 	
 	public static void registerUser(Map<Object, Object> userData) throws Exception {
 		RetailerFactory.getRetailerInstance().createUser(userData);		
 	}
 	
+	public static String getCurrentUser(HttpServletRequest request) {
+		if (request == null) {
+			return SecurityConstants.GUEST;
+		}
+		
+		HttpSession session = request.getSession();
+		if (session != null) {
+			String user = (String) session.getAttribute("user");
+			if (user!= null && !user.isEmpty()) {
+				return user;
+			}
+		}		
+		return SecurityConstants.GUEST;
+	}
 }

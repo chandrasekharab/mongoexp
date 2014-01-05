@@ -36,6 +36,20 @@ public interface Schema {
 	
 	/**
 	 * 
+	 * @param objName
+	 * @return
+	 */
+	public DocumentObject getDocumentObject(String key, Object value);
+	
+	/**
+	 * 
+	 * @param objName
+	 * @return
+	 */
+	public DocumentObject getDocumentObject(Map<Object, Object> values);
+	
+	/**
+	 * 
 	 * @param startIndex
 	 * @param endIndex
 	 * @param maxRecords

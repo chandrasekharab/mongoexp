@@ -7,20 +7,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import chan.retailer.db.Grocery;
-import chan.retailer.db.InvalidGroceryException;
-import chan.retailer.model.GroceryModel;
-import chan.retailer.model.Model;
 import chan.retailer.model.SimpleModel;
 import chan.retailer.util.RetailerHelper;
+import chan.retailer.util.Util;
+import chan.security.AuthUtil;
 
 public class BasicHandler implements Handler {
 
@@ -33,16 +32,50 @@ public class BasicHandler implements Handler {
 
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response) {
-		if (ServletFileUpload.isMultipartContent(request)) {
+		
+		switch (Util.getContextValue(request)) {
+			case RetailerConstants.USER_REGISTRATION:
+				try {
+					AuthUtil.registerUser(Util.getRequestParamsMap(request));
+					Map<Object, Object> succeed = new HashMap<>();
+					succeed.put("success", "success");
+					RetailerHelper.getView().render(new SimpleModel(succeed), request, response);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			break;
+			
+			case RetailerConstants.LOGIN:
+				String user = request.getParameter(RetailerConstants.EMAIL_ID);
+				String pass = request.getParameter(RetailerConstants.PASSWORD);
+			try {
+				if (AuthUtil.authenticate(user, pass)) {
+					HttpSession session = request.getSession();					
+					session.setAttribute("user", user);
+					session.setMaxInactiveInterval(30*60);					
+					Cookie cookie = new Cookie("user", user);
+					cookie.setMaxAge(30*60);
+					response.addCookie(cookie);
+					Map<Object, Object> succeed = new HashMap<>();
+					
+					request.getRequestDispatcher("/AllGroceries.html").include(request, response);
+					//succeed.put("success", "success");
+					//RetailerHelper.getView().render(new SimpleModel(succeed), request, response);
+				} else {
+					Map<Object, Object> succeed = new HashMap<>();
+					succeed.put("status", "loginfailed");
+					RetailerHelper.getView().render(new SimpleModel(succeed), request, response);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+		/*if (ServletFileUpload.isMultipartContent(request)) {
 			handleMultipart(request, response);
 		} else {
-			/*try {
-				//request.getRequestDispatcher("/AllGroceries.html").forward(request, response);
-			} catch (IOException | ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-		}
+			
+		}*/
 	}
 	
 	protected void handleMultipart(HttpServletRequest request, HttpServletResponse response) {

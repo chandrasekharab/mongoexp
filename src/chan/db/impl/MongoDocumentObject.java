@@ -25,8 +25,8 @@ public class MongoDocumentObject implements DocumentObject{
 
 	@Override
 	public boolean append(Map<Object, Object> values) {
-		// TODO Auto-generated method stub
-		return false;
+		this.values.putAll(values);
+		return true;
 	}
 
 	@Override
@@ -34,5 +34,11 @@ public class MongoDocumentObject implements DocumentObject{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public Object getValue(String key) {
+		return this.values.get(key);
+	}
+	
 
 }

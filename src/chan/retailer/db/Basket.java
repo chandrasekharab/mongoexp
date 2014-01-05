@@ -1,5 +1,7 @@
 package chan.retailer.db;
 
+import java.util.List;
+
 public interface Basket {
 
 	/**
@@ -26,5 +28,5 @@ public interface Basket {
 	/**
 	 * 
 	 */
-	public Grocery[] getAllGroceries();
+	public List<Grocery> getAllGroceries();
 }
