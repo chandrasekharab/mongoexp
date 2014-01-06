@@ -8,3 +8,22 @@
 	width: 80px;
 	height: 80px;
 }
+
+.leftside {
+	background-color: #FFD700; 
+	/* height: 200px; */ 
+	width:20%; 
+	float: left;
+}
+
+.header {
+	background-color: #FFA500;
+	width: 100%;
+}
+
+.maincontent {
+	background-color: #EEEEEE; 
+	/* height: 200px;  */
+	width: 100%; 
+	float: left;
+}
