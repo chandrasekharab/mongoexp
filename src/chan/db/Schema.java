@@ -56,4 +56,10 @@ public interface Schema {
 	 * @return
 	 */
 	public List<DocumentObject> getDocumentObjects(int startIndex, int endIndex, int maxRecords);
+
+	/**
+	 * 
+	 * @param pattern
+	 */
+	public Map<Object, Object> search(String key, String pattern);
 }

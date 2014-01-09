@@ -98,4 +98,16 @@ public class MongoSchema implements Schema{
 		return null;
 	}
 
+	@Override
+	public Map<Object, Object> search(String key, String pattern) {
+		Map<Object, Object> data = new HashMap<>();
+		DBCursor cursor = mongoDBCol.find(new BasicDBObject(key, "/.*"+pattern+"/i"));
+		while (cursor.hasNext()) {
+			DBObject obj = cursor.next();
+			data.putAll(obj.toMap());
+		}
+		return data;
+		
+	}
+
 }

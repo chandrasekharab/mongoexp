@@ -34,4 +34,8 @@ public class RetailerConstants {
 	
 	public static final String MONGO_ID = "_id";
 	
+	public static final String SEARCH = "search";
+	
+	public static final String SEARCH_STRING = "searchString";
+	
 }

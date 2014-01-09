@@ -20,6 +20,8 @@ import chan.retailer.RetailerConstants;
 import chan.retailer.db.Grocery;
 import chan.retailer.db.InvalidGroceryException;
 import chan.retailer.db.impl.GroceryImpl;
+import chan.retailer.search.BasicSearch;
+import chan.retailer.search.Search;
 import chan.retailer.view.RetailerView;
 import chan.retailer.view.View;
 
@@ -136,4 +138,21 @@ public class RetailerHelper {
 		return null;		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 */
+	public static Map<Object, Object> searchGroceries(String key, String pattern) throws FileNotFoundException, IOException {		
+		return getGrocerySchema().search(key, pattern);
+	} 
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public static Search getSearchHandler() {
+		return new BasicSearch();
+	}
 }

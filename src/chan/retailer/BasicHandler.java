@@ -1,7 +1,6 @@
 package chan.retailer;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -69,6 +68,12 @@ public class BasicHandler implements Handler {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			break;
+			
+			case RetailerConstants.SEARCH:
+				String searchString = request.getParameter(RetailerConstants.SEARCH_STRING);
+				Map<Object, Object> result = (Map<Object, Object>) RetailerHelper.getSearchHandler().search(searchString);
+				RetailerHelper.getView().render(new SimpleModel(result), request, response);
 			break;
 		}
 		/*if (ServletFileUpload.isMultipartContent(request)) {
