@@ -26,6 +26,14 @@ public interface DocumentObject {
 	
 	/**
 	 * 
+	 * @param key
+	 * @param value
+	 * @return
+	 */
+	public DocumentObject append(Object key, Object value);
+	
+	/**
+	 * 
 	 * @param values
 	 * @return
 	 */
@@ -37,4 +45,16 @@ public interface DocumentObject {
 	 * @return
 	 */
 	public Object getValue(String key);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String toJson();
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String toXml();
 }

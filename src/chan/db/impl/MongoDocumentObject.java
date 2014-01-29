@@ -39,6 +39,25 @@ public class MongoDocumentObject implements DocumentObject{
 	public Object getValue(String key) {
 		return this.values.get(key);
 	}
+
+	@Override
+	public String toJson() {
+		
+		return null;
+	}
+
+	@Override
+	public String toXml() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DocumentObject append(Object key, Object value) {
+		this.values.put(key, value);
+		return this;
+	}
+	
 	
 
 }

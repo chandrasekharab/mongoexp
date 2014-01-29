@@ -10,6 +10,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+import chan.db.Constant;
 import chan.db.DocumentObject;
 import chan.db.Schema;
 
@@ -25,6 +26,7 @@ public class MongoSchema implements Schema{
 	public boolean insertDocumentObject(DocumentObject docObj) {
 		BasicDBObject bdbObj = new BasicDBObject(docObj.getValues());
 		mongoDBCol.insert(bdbObj);
+		docObj.append(Constant.OBJECT_ID, bdbObj.get(Constant.OBJECT_ID).toString());
 		return true;
 	}
 
