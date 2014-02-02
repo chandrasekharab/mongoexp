@@ -4,14 +4,8 @@ public interface Workflow {
 
 	/**
 	 * 
-	 * @param flow
 	 */
-	public void load(Object flow);
-	
-	/**
-	 * 
-	 */
-	public void start() throws FlowNotFoundException;
+	public void start(Object flowName) throws FlowNotFoundException;
 	
 	/**
 	 * 

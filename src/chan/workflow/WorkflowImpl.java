@@ -1,50 +1,51 @@
 package chan.workflow;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
+import org.bson.types.ObjectId;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import chan.db.DocumentObject;
+import chan.db.Schema;
+import chan.db.impl.MongoDocumentObject;
+import chan.db.util.DBHelper;
+import chan.db.util.MongoConstant;
 
 public class WorkflowImpl implements Workflow{
 
-	private Document workflow = null;
+	private List<Map<Object, Object>> activities = null;
 	private Map<String, Object> in;
+	private String flowName=null;
 	
-	public WorkflowImpl(Document doc, Map<String, Object> in) {
-		this.workflow = doc;
-		this.in = in;
+	public WorkflowImpl() {
 	}
 	
-	@Override
-	public void load(Object flow) {
+	public WorkflowImpl(String flowName, String flowId) {
 		WorkflowDB wdb = new WorkflowDB();
-		workflow = createDocument((String)flow);		
+		DocumentObject docObject = wdb.getWorkflowInstance(flowName, flowId);		
+		List<Map<Object, Object>> actList = (List<Map<Object, Object>>)docObject.getValue(WorkflowConstant.ACTIVITIES);
+		this.activities = actList;
+		this.flowName = flowName;
 	}
-
+	
 	@Override
-	public void start() throws FlowNotFoundException {
-		String activity = getActivityClass(0);
+	public void start(Object flowName) throws FlowNotFoundException {
+		WorkflowDB wdb = new WorkflowDB();
+		this.flowName = (String)flowName;
+		DocumentObject docObject = wdb.createNewWorkflowInstance((String)flowName, "c");
+		List<Map<Object, Object>> actList = (List<Map<Object, Object>>)docObject.getValue(WorkflowConstant.ACTIVITIES);
+		this.activities = actList;
+		Map<Object, Object> activity = activities.get(0);
+		String actClass = (String)activity.get(WorkflowConstant.CLASS);
+		
 		try {
-			Class<?> act = Class.forName(activity);
+			Class<?> act = Class.forName(actClass);
 			Object actObj = act.newInstance(); 
 			Method execute = act.getDeclaredMethod("execute", Object.class);			
 			execute.invoke(actObj, this.in);
+			updateActivityStatus(docObject, activity, WorkflowConstant.STATUS.INPROGRESS);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,62 +106,19 @@ public class WorkflowImpl implements Workflow{
 		
 	}
 	
-	private Document createDocument(String xmlString) {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		Document document = null;
-	    try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			document = builder.parse(new InputSource(new StringReader(xmlString)));
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	    return document;
-	}
-
-	private String getActivityClass(int index) {
-		XPathFactory xpathFactory = XPathFactory.newInstance();
-	    XPath xpath = xpathFactory.newXPath();
-	    String className = null;
-		try {
-			className = xpath.evaluate("/flow/activity/@class", workflow);
-		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    return className;
-	}
-	
-	private Map<String, Object> getInOutObject() {
-		Map<String, Object> inout = new HashMap<>();		
-		inout.put("input", getActivityAttributes("input"));
-		inout.put("output", getActivityAttributes("output"));
-		return inout;
-	}
-	
-	private Map<String, Object> getActivityAttributes(String attr) {
-		Map<String, Object> data = new HashMap<>();
+	public void updateActivityStatus(DocumentObject docObject, Map<Object, Object> activity, String status) {
+		Schema schema = DBHelper.getSchema(this.flowName);
+		//schema.update( { _id: 4, "activities.name": "s1" }, { $set: { "grades.$.status" : "inprogress" } } )
+		Map<Object, Object> old = new HashMap<>();
+		old.put(MongoConstant.ID, new ObjectId((String)docObject.getValue(MongoConstant.ID)));
+		old.put(WorkflowConstant.ACTIVITIES_NAME, activity.get(WorkflowConstant.NAME));
 		
-		XPathFactory xpathFactory = XPathFactory.newInstance();
-	    XPath xpath = xpathFactory.newXPath();
-	    Node inputs = null;
-		try {
-			String path = "/flow/activity/" + attr;
-			inputs = (Node) xpath.evaluate(path, workflow, XPathConstants.NODE);
-			NodeList nodes = inputs.getChildNodes();
-			int len = nodes.getLength();
-			for (int i=0; i< len; i++) {
-				Node nd = nodes.item(i);
-				data.put(nd.getNodeName(), nd.getNodeValue());				
-			}
-			
-		} catch (XPathExpressionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    return data;
+		Map<Object, Object> newDoc = new HashMap<>();
+		Map<Object, Object> c = new HashMap<>();
+		//status.put(WorkflowConstant.STATUS, "inprogress");
+		c.put(WorkflowConstant.ACTIVITIES_$_STATUS, status);
+		newDoc.put(MongoConstant.$SET, c);		
+		schema.updateDocumentObject(new MongoDocumentObject(old), newDoc);
 	}
-
 	
 }

@@ -9,6 +9,6 @@ public class WorkflowEngineTest {
 	@Test
 	public void testStartWorkflow() {		
 		WorkflowEngine engine = new WorkflowEngine();
-		engine.startWorkflow("sss");
+		engine.startWorkflow("approve");
 	}
 }

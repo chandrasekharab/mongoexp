@@ -2,8 +2,6 @@ package chan.workflow;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,20 +13,12 @@ import org.xml.sax.SAXException;
 
 public class WorkflowEngine {
 
-	public void startWorkflow(String workflow) {		
-		String flow = "<flow name=\"approve\"><activity id=\"s1\" class=\"chan.retailer.workflow.SimpleActivity\">"
-				+ "<input><id /><name /></input>"
-				+ "<output><oId /><oName /></output>"
-				+ "</activity></flow>";
+	public void startWorkflow(String workflow) {
 		
-		Document doc = createDocument(flow);
-		Map<String, Object> in = new HashMap<>();
-		in.put("id", "chan");
-		in.put("name", "chandra");		
-		Workflow wf = new WorkflowImpl(doc, in);
+		Workflow wf = new WorkflowImpl();
 		
 		try {
-			wf.start();
+			wf.start(workflow);
 		} catch (FlowNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,14 +26,19 @@ public class WorkflowEngine {
 	}
 		
 	public void stopWorkflow(Workflow workflow) {
-		
+	
+	}
+	
+	public void processFlow(String flowName, String flowId) {
+		Workflow wf = new WorkflowImpl(flowName, flowId);		
+		wf.runNextActivity();
 	}
 	
 	public void runActivity(String workflowId, String activityId, Object activityData) {
 		// Get the data from db
 		WorkflowDB wdb = new WorkflowDB();		
 		String flowXml = wdb.getWorkflow(workflowId);
-		Workflow workflow = new WorkflowImpl(createDocument(flowXml), null);
+		Workflow workflow = new WorkflowImpl();
 		workflow.runActivity(activityId);	
 	}
 	
