@@ -10,9 +10,13 @@ public class WorkflowConstant {
 	
 	public static final String ACTIVITIES = "activities";
 	
+	public static final String SEQUENCE = "sequence";
+	
 	public static final String INPUT = "input";
 	
 	public static final String OUTPUT = "output";
+	
+	public static final String ACTIVITIES_STATUS = "status";
 	
 	public static final String ACTIVITIES_NAME = "activities.name";
 	

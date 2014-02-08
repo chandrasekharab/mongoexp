@@ -1,5 +1,7 @@
 package chan.workflow;
 
+import java.util.Map;
+
 public interface Workflow {
 
 	/**
@@ -28,7 +30,7 @@ public interface Workflow {
 	/**
 	 * 
 	 */
-	public void runNextActivity();
+	public void runNextActivity(Map<Object, Object> data);
 	
 	/**
 	 * 

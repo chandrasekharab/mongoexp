@@ -61,7 +61,9 @@ public class WorkflowDB {
 			act.put(WorkflowConstant.NAME, attName.getNodeValue());
 			
 			Node attClass = attr.getNamedItem(WorkflowConstant.CLASS);
-			act.put(WorkflowConstant.CLASS, attClass.getNodeValue());		
+			act.put(WorkflowConstant.CLASS, attClass.getNodeValue());
+			
+			act.put(WorkflowConstant.SEQUENCE, i+1);
 			
 			//act.put(WorkflowConstant.STATUS, "OPEN");
 			
