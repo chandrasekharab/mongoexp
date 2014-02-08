@@ -2,8 +2,18 @@ package chan.workflow;
 
 import java.util.Map;
 
-public class WorkflowEngine {
+import chan.logging.LogManager;
+import chan.logging.Logger;
 
+public class WorkflowEngine {
+	private Logger oLog;
+	
+	public WorkflowEngine() {
+		oLog = LogManager.getLoggerInstance();
+	}
+	
+	
+	
 	public void startWorkflow(String workflow) {
 		
 		Workflow wf = new WorkflowImpl();
@@ -11,16 +21,15 @@ public class WorkflowEngine {
 		try {
 			wf.start(workflow);
 		} catch (FlowNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			oLog.error(e.getStackTrace());
 		}		
 	}
 		
-	public void stopWorkflow(Workflow workflow) {
+	public void stopWorkflow(String workflow) {
 	
 	}
 	
-	public void processFlow(String flowName, String flowId, Map<Object, Object> data) {		
+	public void processFlow(String flowName, String flowId, Map<Object, Object> data) {
 		Workflow wf = new WorkflowImpl(flowName, flowId);
 		wf.runNextActivity(data);
 	}

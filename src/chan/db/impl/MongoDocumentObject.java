@@ -1,5 +1,6 @@
 package chan.db.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import chan.db.DocumentObject;
@@ -10,6 +11,11 @@ public class MongoDocumentObject implements DocumentObject{
 	
 	public MongoDocumentObject(Map<Object, Object> values) {
 		this.values = values;
+	}
+	
+	public MongoDocumentObject(Object key, Object value) {		
+		this.values = new HashMap<>();
+		this.values.put(key, value);
 	}
 	
 	@Override

@@ -7,7 +7,8 @@ public class LogManager {
 		if (logger == null) {			
 			synchronized (LogManager.class) {
 				 if (logger == null) {
-					 logger = new AsyncLogger();
+					 //logger = new AsyncLogger();
+					 logger = new AsyncLogger(new MongoAppender());					 
 					 AsyncLogger l = (AsyncLogger)logger;
 					 Thread t = new Thread(l);
 					 t.setPriority(Thread.MIN_PRIORITY);

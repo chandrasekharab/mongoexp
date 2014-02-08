@@ -12,6 +12,8 @@ import chan.db.Schema;
 import chan.db.impl.MongoDocumentObject;
 import chan.db.util.DBHelper;
 import chan.db.util.MongoConstant;
+import chan.logging.LogManager;
+import chan.logging.Logger;
 
 public class WorkflowImpl implements Workflow{
 
@@ -20,14 +22,18 @@ public class WorkflowImpl implements Workflow{
 	private String flowName=null;
 	private DocumentObject docObject = null;
 	private Map<Object, Object> currentActivity = null;
+	private Logger oLog;
 	
 	public WorkflowImpl() {
+		oLog = LogManager.getLoggerInstance();
 	}
 	
 	public WorkflowImpl(String flowName, String flowId) {
+		this();
 		WorkflowDB wdb = new WorkflowDB();
 		this.docObject = wdb.getWorkflowInstance(flowName, flowId);		
 		init(this.docObject, flowName);
+		
 	}
 	
 	@Override
@@ -160,8 +166,7 @@ public class WorkflowImpl implements Workflow{
 			execute.invoke(actObj, data);
 			updateActivityStatus(this.docObject, activity, WorkflowConstant.STATUS.INPROGRESS);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+			oLog.error(e);
+		}
 	}
 }
